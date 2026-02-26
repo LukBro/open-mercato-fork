@@ -124,6 +124,7 @@ Files like `AGENTS.md` and `CLAUDE.md` use UPPERCASE names and are not numberedâ
 | [SPEC-046](SPEC-046-2026-02-25-customer-detail-pages-v2.md) | 2026-02-25 | Customer Detail Pages v2 | CrudForm-based rewrite of company and person detail pages with two-zone layout and UMES injection slots |
 | [SPEC-047](SPEC-047-2026-02-25-sales-document-detail-pages-v2.md) | 2026-02-25 | Sales Document Detail Pages v2 | CrudForm-based rewrite of quote and order detail pages with two-zone layout and UMES injection slots |
 | [SPEC-048](SPEC-048-2026-02-22-integration-test-coverage-quick-wins.md) | 2026-02-22 | Integration Test Coverage Quick Wins | Pure-API integration tests for 6 zero-coverage core modules (currencies, staff, dictionaries, api_keys, audit_logs, directory) |
+| [SPEC-049](SPEC-049-2026-02-24-airtable-import-module.md) | 2026-02-24 | Airtable Import Module | 7-step wizard for one-time migration from Airtable to Open Mercato with heuristic module matching and idempotent UUID-planned import |
 
 ## Specification Structure
 

@@ -99,3 +99,25 @@ Centralize shared command utilities like undo extraction in `packages/shared/src
 3. Keep selectors user-facing and stable (`Edit`, `Filter`) rather than translation keys or positional indexing (`nth(...)`) when possible.
 
 **Applies to**: `packages/*/__integration__/**` Playwright tests and shared integration helpers (especially sales/customer flows).
+
+## Worker files require a package build before generator discovery
+
+**Context**: Adding a new `*.worker.ts` file to a module under `packages/core/src/modules/<module>/workers/` and then running `yarn generate` did NOT discover the worker.
+
+**Problem**: The generator's `moduleHasExport()` function uses dynamic `import()` to check if a module exports `metadata`. For package imports like `@open-mercato/core/modules/.../workers/file.worker`, Node.js resolves the `default` export condition from `package.json`, which points to `./dist/*.js`. If the dist file doesn't exist, the dynamic import fails silently and `moduleHasExport` returns `false`, causing the worker to be skipped.
+
+API routes work because their `moduleHasExport` check uses the absolute **file path** (not package import path), so they don't need to be built first.
+
+**Rule**: After adding or renaming a worker file, always run `yarn build:packages` before `yarn generate`. Workers need the dist file to be present for discovery.
+
+**Applies to**: Workers in all packages under `src/modules/<module>/workers/`.
+
+## Get knex via EntityManager, not DI container
+
+**Context**: The plan suggested using `container.resolve('knex')` to get a raw knex query builder for date-patching SQL.
+
+**Problem**: `knex` is not registered as a named service in the DI container.
+
+**Rule**: Get knex from MikroORM EntityManager directly: `em.getConnection().getKnex()`. This is the pattern used throughout the codebase (customers CLI, query_index module, etc.).
+
+**Applies to**: Any place that needs raw knex for custom SQL operations alongside MikroORM.
